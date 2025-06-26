@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DemoEPS.Models.Coupon>
+@{
+    ViewBag.Title = "Coupons";
+}
+@if (Request.QueryString["msg"] != null)
+{
+    <div>
+        @Request.QueryString["msg"].ToString()
+    </div>
+}
+
+<h2>All Coupons</h2>
+<p>@Html.ActionLink("Create New Coupon", "Create")</p>
+<table class="table">
+    <tr>
+        <th>Code</th>
+        <th>Discount %</th>
+        <th>Is Sent</th>
+        <th>Expires</th>
+        <th>Send coupon</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Code</td>
+            <td>@item.DiscountPercentage</td>
+            <td>@item.IsSent</td>
+            <td>@item.ExpiryDate.Value.ToString("yyyy-MM-dd")</td>
+            @if (!item.IsSent)
+            {
+                <td><input type="button" value="Send" onclick='window.location.href = "@Url.Action("SendCouponCode", "Coupon", new { code = @item.Code })";' /></td>
+            }
+        </tr>
+    }
+</table>
